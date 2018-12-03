@@ -1,0 +1,99 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "darius@matulionis.lt"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get list of users",
+                "description": "Returns list of all users",
+                "operationId": "getAllUsers",
+                "responses": {
+                    "200": {
+                        "description": "Returns list of all users"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": {
+                            "JWT": [
+                                "write:users",
+                                "read:users"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "title": "User model",
+                "description": "User model",
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "password",
+                    "dateofbirth"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "first_name": {
+                        "title": "First name",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "title": "Last name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "Email address",
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Pet"
+                }
+            }
+        },
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "JWT",
+                "in": "header"
+            }
+        }
+    }
+}
