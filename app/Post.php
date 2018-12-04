@@ -43,6 +43,10 @@ class Post extends Model
     protected $hidden = [
         'picture',
     ];
+
+    protected $casts = [
+        'field_name' => 'array'
+    ];
  
     public function user()
     {

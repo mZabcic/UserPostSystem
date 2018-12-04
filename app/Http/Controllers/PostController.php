@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException as NotFound;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -79,8 +80,18 @@ class PostController extends Controller
 
         if ($request->exists('picture')) {
             $image = $request->file('picture');
-
-            die(var_dump($image));
+            $name = $image->getClientOriginalName();
+            $size = $image->getClientSize();
+            $extension = $image->getClientOriginalExtension();
+            $storage = Storage::put('post-images', $image);
+            $imageInfo = array (
+                "name" => $name,
+                "size" => $size,
+                "extension" => $extension,
+                "path" => $storage
+            );
+            $post->picture = $imageInfo;
+            $post->save();
         }
         
         $post = Post::with('user')->find($currentUser->id );

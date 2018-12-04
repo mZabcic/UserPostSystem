@@ -717,8 +717,7 @@
                     },
                     "picture": {
                         "title": "Picture",
-                        "type": "string",
-                        "format": "binary"
+                        "type": "string"
                     }
                 },
                 "type": "object"

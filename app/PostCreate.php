@@ -41,11 +41,9 @@ class PostCreate
 
     /**
      * @OA\Property(
-     *     title="Picture",
-     *     type="string",
-     *     format="binary"
+     *     title="Picture"
      * )
-     *
+     *  @var string
      */
     private $picture;
 
