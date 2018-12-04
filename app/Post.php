@@ -1,31 +1,30 @@
 <?php
 
 /**
- * Class User
+ * Class Post
  *
  * @package RZNU
  *
  * @author  Mislav Žabčić <mislav.zabcic@gmail.com>
  *
  * @OA\Schema(
- *     description="User model",
- *     title="User",
- *     required={"first_name", "last_name", "email", "password", "dateofbirth"},
+ *     description="Post",
+ *     title="Post",
+ *     required={"title", "content"},
  * )
  */
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use Illuminate\Database\Eloquent\Model;
 
-
-class User extends Authenticatable implements JWTSubject
+class Post extends Model
 {
-    use Notifiable;
+
+
+    protected $table = 'posts';
+
 
     /**
      * The attributes that are mass assignable.
@@ -33,27 +32,23 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name','last_name', 'email', 'password', 'date_of_birth'
+        'title','content', 'picture', 'user_id'
     ];
 
-    /**
+     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'password',
+        'picture',
     ];
-
-    public function getJWTIdentifier()
-        {
-            return $this->getKey();
-        }
-
-    public function getJWTCustomClaims()
+ 
+    public function user()
     {
-        return [];
+        return $this->belongsTo('App\User','user_id', 'id');
     }
+  
 
     /**
      * @OA\Property(
@@ -67,50 +62,49 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * @OA\Property(
-     *     title="First name",
+     *     title="Title",
      * )
      *
      * @var string
      */
-    private $first_name;
+    private $title;
 
     /**
      * @OA\Property(
-     *     title="Last name",
+     *     title="Content",
      * )
      *
      * @var string
      */
-    private $last_name;
+    private $content;
 
     /**
      * @OA\Property(
-     *     title="Email address",
+     *     title="Picture",
      * )
      *
-     * @var string
+     * @var binary
      */
-    private $email;
+    private $picture;
 
     /**
      * @OA\Property(
-     *     title="Password",
+     *     format="int64",
+     *     title="User Id",
      * )
      *
-     * @var string
+     * @var integer
      */
-    private $password;
+    private $user_id;
 
-     /**
+    /**
      * @OA\Property(
-     *     title="Date of birth",
-     *     format="date",
-     *     type="string"
+     *     title="User",
      * )
      *
-     * @var \Date
+     * @var User
      */
-    private $date_of_birth;
+    private $user;
 
 
      /**
