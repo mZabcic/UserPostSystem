@@ -35,20 +35,13 @@ class Post extends Model
         'title','content', 'picture', 'user_id'
     ];
 
-     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'picture',
-    ];
+   
 
     protected $casts = [
-        'field_name' => 'array'
+        'picture' => 'array'
     ];
  
-    public function user()
+    public function author()
     {
         return $this->belongsTo('App\User','user_id', 'id');
     }
@@ -103,12 +96,12 @@ class Post extends Model
 
     /**
      * @OA\Property(
-     *     title="User",
+     *     title="Author",
      * )
      *
      * @var User
      */
-    private $user;
+    private $author;
 
 
      /**

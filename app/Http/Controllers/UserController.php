@@ -37,6 +37,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException as NotFound;
 use Auth;
+use App\Post;
 
 
 
@@ -455,8 +456,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="No Content",
-     *         @OA\JsonContent(ref="#/components/schemas/User"),
+     *         description="No Content"
      *     ),
      *      @OA\Response(
      *         response=401,
@@ -519,7 +519,7 @@ class UserController extends Controller
      *  @OA\Parameter(
      *         name="Content-type",
      *         in="header",
-     *         required=false,
+     *         required=true,
      *         @OA\Schema(
      *             type="string",
      *             default="application/x-www-form-urlencoded"
@@ -580,6 +580,58 @@ class UserController extends Controller
         $user->update($request->all());
 
         return response()->json($user, 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/users/{userId}/posts",
+     *     tags={"Posts, Users"},
+     *     summary="Get posts by user id",
+     *     description="Returns posts that where created by user",
+     *     operationId="getPostByUserId",
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         description="ID of a user for posts to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Succes",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Post")
+     *         )
+     *     ),
+     *      @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(ref="#/components/schemas/Error"),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found",
+     *         @OA\JsonContent(ref="#/components/schemas/Error"),
+     *     ),
+     *     security={
+     *         {"Authorization": {}}
+     *     }
+     * )
+     */
+    public function getPostsByUserId($id) {
+        try {
+            $user = User::where('id', '=', $id)->firstOrFail();
+        } catch (NotFound $e) {
+            return response()->json(['error' => 'No user found'], 404);
+        }
+        
+        $posts = Post::where('user_id', '=', $user['id'])->with('author')->get();
+        
+        return response()->json($posts);
     }
 
 
