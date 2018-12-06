@@ -14,12 +14,11 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Post::class, function (Faker $faker) {
+    $users = App\User::pluck('id')->toArray();
     return [
-        'first_name' => $faker->name,
-        'last_name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'date_of_birth' => Carbon::createFromDate(1993, 5, 18)
+        'title' => $faker->sentence(6, true) ,
+        'content' => $faker->sentence(8, true) ,
+        'user_id' => $faker->randomElement($users)
     ];
 });

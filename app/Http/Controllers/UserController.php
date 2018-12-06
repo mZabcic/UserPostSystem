@@ -138,29 +138,6 @@ class UserController extends Controller
         return response()->json(compact('user', 'token'));
     }
 
-    /**
-     * @OA\Get(
-     *     path="/",
-     *     tags={"Base"},
-     *     summary="Get welcome message",
-     *     description="Get welcome message",
-     *     operationId="welcome",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Succes",
-     *         @OA\JsonContent(ref="#/components/schemas/Message"),
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error",
-     *         @OA\JsonContent(ref="#/components/schemas/Error"),
-     *     )
-     * )
-     */
-    public function welcome() {
-        return response()->json(["message" => "Thank you for using RZNU api for LAB1"]);
-    }
-
     
 
      /**
@@ -187,7 +164,7 @@ class UserController extends Controller
      *                 type="Int64"
      *             )
      *         ),
-     *         @OA\JsonContent(ref="#/components/schemas/User"),
+     *         @OA\JsonContent(ref="#/components/schemas/AuthResponse"),
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -317,10 +294,7 @@ class UserController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Succes",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/User")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/User"),
      *     ),
      *      @OA\Response(
      *         response=401,
