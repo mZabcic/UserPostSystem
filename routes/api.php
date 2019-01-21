@@ -16,6 +16,8 @@ Route::group(['middleware' => ['jwt.verify'],'prefix' => 'users'], function() {
     Route::delete('{id}', 'UserController@delete');
     Route::put('{id}', 'UserController@update');
     Route::get('/{id}/posts', 'UserController@getPostsByUserId');
+    Route::post('/follow/{id}', 'UserController@followUser');
+    Route::delete('/unfollow/{id}', 'UserController@unfollowUser');
 });
 
 Route::group(['middleware' => ['jwt.verify'],'prefix' => 'posts'], function() {

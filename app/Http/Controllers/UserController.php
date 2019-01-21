@@ -404,7 +404,7 @@ class UserController extends Controller
      */
     public function getById($id) {
         try {
-            $user = User::where('id', '=', $id)->firstOrFail();
+            $user = User::where('id', '=', $id)->with('following')->with('followers')->firstOrFail();
         } catch (NotFound $e) {
             return response()->json(['error' => 'No user found'], 404);
         }
@@ -607,6 +607,41 @@ class UserController extends Controller
         
         return response()->json($posts);
     }
+
+
+    public function followUser($id) {
+        try {
+            $user = User::where('id', '=', $id)->with('followers')->firstOrFail();
+        } catch (NotFound $e) {
+            return response()->json(['error' => 'No user found'], 404);
+        }
+        $currentUser = Auth::user();
+
+     
+        if ($currentUser->id == $id) {
+            return response()->json(['error' => 'You cant follow yourself'], 400);
+        }
+
+        $currentUser->following()->sync([$id], false);;
+        
+        return response()->json($user);
+    }
+
+    public function unfollowUser($id) {
+        try {
+            $user = User::where('id', '=', $id)->firstOrFail();
+        } catch (NotFound $e) {
+            return response()->json(['error' => 'No user found'], 404);
+        }
+        $currentUser = Auth::user();
+
+       
+
+        $currentUser->following()->detach($id);
+        
+        return response()->json($user, 204);
+    }
+
 
 
 }
