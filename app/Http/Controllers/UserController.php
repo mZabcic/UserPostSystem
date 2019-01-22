@@ -184,8 +184,7 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'date_of_birth' => 'required|date_format:Y-m-d|before:today',
+            'password' => 'required|string|min:6'
         ]);
 
         if ($validator->fails()) {
@@ -196,11 +195,12 @@ class UserController extends Controller
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),
             'email' => $request->get('email'),
-            'date_of_birth' => Carbon::parse($request->get('date_of_birth'))->format('Y-m-d'),
             'password' => Hash::make($request->get('password')),
         ]);
 
         $token = JWTAuth::fromUser($user);
+
+        $user->following()->sync([$user->id], false);;
 
 
         return response()->json(compact('user', 'token'), 201);
@@ -328,7 +328,13 @@ class UserController extends Controller
 
         }
 
-        return response()->json(compact('user'));
+        try {
+            $u = User::where('id', '=', $user->id)->with('following')->with('followers')->firstOrFail();
+        } catch (NotFound $e) {
+            return response()->json(['error' => 'No user found'], 404);
+        }
+
+        return response()->json($u);
     }
 
 
@@ -359,7 +365,8 @@ class UserController extends Controller
      * )
      */
     public function getAll() {
-        $users = User::all();
+        $currentUser = Auth::user();
+        $users = User::orderBy('last_name')->get();
         return response()->json($users, 200);
     }
 

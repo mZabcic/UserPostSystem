@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException as NotFound;
 use Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use App\Events\PostCreated;
 
 /**
  *
@@ -97,6 +98,8 @@ class PostController extends Controller
             'user_id' => $currentUser->id
         ]);
 
+
+
         if ($request->exists('picture')) {
             $image = $request->file('picture');
             $name = $image->getClientOriginalName();
@@ -114,6 +117,8 @@ class PostController extends Controller
         }
         
         $post = Post::with('author')->find($post->id);
+
+        event(new PostCreated($post));
 
         return response()->json($post, 201);
     }
@@ -493,6 +498,52 @@ class PostController extends Controller
         $post = Post::with('author')->find($post->id);
 
         return response()->json($post, 200);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/posts",
+     *     tags={"Posts"},
+     *     summary="Get all posts",
+     *     description="Returns array of all posts",
+     *     operationId="getAllPosts",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Succes",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Post")
+     *         )
+     *     ),
+     *      @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(ref="#/components/schemas/Error"),
+     *     ),
+     *     security={
+     *         {"Authorization": {}}
+     *     }
+     * )
+     */
+    public function getFollowed() {
+        $currentUser = Auth::user();
+
+        try {
+            $u = User::where('id', '=',  $currentUser->id)->with('following')->firstOrFail();
+        } catch (NotFound $e) {
+            return response()->json(['error' => 'No user found'], 404);
+        }
+
+        $following = [];
+        foreach ($u->following as $follow) {
+            array_push($following, $follow->id);
+        }
+
+        $posts = Post::with('author')->AuthorIds($following)->orderBy('updated_at', 'DESC')->get();;
+
+
+        return response()->json($posts, 200);
     }
 
 

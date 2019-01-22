@@ -46,6 +46,10 @@ class Post extends Model
         return $this->belongsTo('App\User','user_id', 'id');
     }
 
+    public function scopeAuthorIds($query, $ids)
+    {
+        return $query->whereIn('user_id', $ids);
+    }
 
     /**
      * @OA\Property(

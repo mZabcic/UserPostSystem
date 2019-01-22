@@ -31,6 +31,9 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+            <a disabled class="button is-light">
+                {{user.email}}
+              </a>
           <a (click)="logout()" class="button is-light">
             Log out
           </a>

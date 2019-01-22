@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
     this.ngxService.start();
     this.authService.register(this.login.value).subscribe((data) => {
       localStorage.setItem('access_token', data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
       this.router.navigate(['']);
       this.ngxService.stop();
     }, (err) => {

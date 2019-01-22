@@ -20,6 +20,11 @@ export class PostService {
     return this.http.post<any>(this.url + 'posts', data ).pipe();
   }
 
+  public get()  : Observable<any> {
+    return this.http.get<any>(this.url + 'posts/following' ).pipe();
+  }
+
+
 
 
 }

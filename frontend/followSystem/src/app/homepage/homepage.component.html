@@ -1,6 +1,44 @@
 <ngx-ui-loader></ngx-ui-loader>
 <app-header></app-header>
 <section class="homepage">
-  <div class="box homepage__box">
-  </div>
+  <ng-container *ngFor="let post of posts" >
+    <div class="box" [class.new]="post.new != undefined && post.new"  (mouseenter) ="mouse(post)" (mouseleave)="mouse(post)">
+        <article class="media">
+          <div class="media-left">
+            <figure class="image is-128x128">
+              <img *ngIf="post.picture == null" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+            </figure>
+          </div>
+          <div class="media-content">
+            <div class="content">
+              <div>
+                <strong [innerHtml]="post.author.first_name + ' ' + post.author.last_name"></strong>, <small>{{post.author.email}}</small>
+                <div> <small> {{post.updated_at | date:'medium'}}</small></div>   <span *ngIf="post.new != undefined && post.new" class="tag is-success">New post</span>
+                <hr>
+                <p [innerHtml]="post.content">
+              </div>
+            </div>
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <a class="level-item" aria-label="reply">
+                  <span class="icon is-small">
+                    <i class="fas fa-reply" aria-hidden="true"></i>
+                  </span>
+                </a>
+                <a class="level-item" aria-label="retweet">
+                  <span class="icon is-small">
+                    <i class="fas fa-retweet" aria-hidden="true"></i>
+                  </span>
+                </a>
+                <a class="level-item" aria-label="like">
+                  <span class="icon is-small">
+                    <i class="fas fa-heart" aria-hidden="true"></i>
+                  </span>
+                </a>
+              </div>
+            </nav>
+          </div>
+        </article>
+    </div>
+  </ng-container>
 </section>

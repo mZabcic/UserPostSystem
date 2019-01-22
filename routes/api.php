@@ -23,9 +23,12 @@ Route::group(['middleware' => ['jwt.verify'],'prefix' => 'users'], function() {
 Route::group(['middleware' => ['jwt.verify'],'prefix' => 'posts'], function() {
     Route::post('/', 'PostController@create');
     Route::get('/', 'PostController@getAll');
+    Route::get('/following', 'PostController@getFollowed');
     Route::get('/{id}', 'PostController@getById');
     Route::delete('/{id}', 'PostController@delete');
     Route::get('/{id}/image', 'PostController@getImageById');
     Route::put('{id}', 'PostController@update');
     Route::post('{id}/image', 'PostController@updateImage');
 });
+
+Broadcast::routes(['middleware' => 'jwt.verify']);

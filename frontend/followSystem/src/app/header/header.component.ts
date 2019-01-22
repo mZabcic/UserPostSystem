@@ -8,9 +8,12 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
+  user : any;
+
   constructor(private authService : AuthService) { }
 
   ngOnInit() {
+      this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   logout() : void {
