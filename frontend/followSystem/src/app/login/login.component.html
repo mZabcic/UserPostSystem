@@ -1,3 +1,44 @@
-<p>
-  login works!
-</p>
+<ngx-ui-loader></ngx-ui-loader>
+<section class="login">
+  <div class="box login__box">
+    <h3 class="title is-3">Login</h3>
+    <form [formGroup]="login" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <input name="fakeusernameremembered" style="display:none" type="text">
+        <input name="fakepasswordremembered" style="display:none" type="password">
+        
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input formControlName="email"  autocomplete="nope"  class="input" type="text" placeholder="Email address" name="email-address" id="email-address">
+        </div>
+      </div>
+
+  
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input class="input" type="password"  autocomplete="new-password"  placeholder="Password" formControlName="password" name="password" id="password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+          <span class="icon is-small is-right">
+            <i class="fas fa-check"></i>
+          </span>
+        </div>
+      </div>
+      <div *ngIf="error.length > 0" class="notification is-danger">
+          <button  class="delete" (click)="error = ''"></button>
+            {{error}}
+        </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button [disabled]="login != undefined && !login.valid" class="button is-link">Login</button>
+        </div>
+        <div class="control">
+          <button class="button is-text" (click)="router.navigate(['register'])">Register</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

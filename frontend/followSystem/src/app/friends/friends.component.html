@@ -1,0 +1,53 @@
+<ngx-ui-loader></ngx-ui-loader>
+<app-header></app-header>
+<section class="friend">
+    <div class="box friend__box">
+        <table class="table">
+                <thead>
+                  <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Email</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Email</th>
+                        <th></th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                <ng-container *ngFor="let user of users">
+                  <tr *ngIf="user.id != me.id">
+                    <td [innerHtml]="user.first_name"></td>
+                    <td [innerHtml]="user.last_name"></td>
+                    <td [innerHtml]="user.email"></td>
+                    <td>
+                        <a *ngIf="isFriend(user.id)" (click)="follow(user.id)" class="button is-primary">Follow</a>
+                        <a *ngIf="!isFriend(user.id)" (click)="unfollow(user.id)" class="button is-danger">Unfollow</a>
+                    </td>
+                   </tr>
+                </ng-container>
+                </tbody>
+              </table>
+            </div>
+</section>
+
+<div *ngIf="error" class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Warning</p>
+            <button class="delete" (click)="error = false;" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            There was an error! Please refresh the page and try again.
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button" (click)="error = false;">Ok</button>
+          </footer>
+        </div>
+</div>

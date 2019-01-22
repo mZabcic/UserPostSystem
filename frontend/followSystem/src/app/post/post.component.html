@@ -1,0 +1,36 @@
+<ngx-ui-loader></ngx-ui-loader>
+<app-header></app-header>
+<section class="post">
+    <div class="box post__box">
+      <h3 class="title is-3">New post</h3>
+      <form [formGroup]="post" (ngSubmit)="onSubmit()" autocomplete="off">
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input formControlName="title"    class="input" type="text" placeholder="Title" name="title" id="title">
+          </div>
+        </div>
+  
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <textarea class="textarea" type="text"  rows="10" placeholder="Content" formControlName="content" name="content" id="content"></textarea>
+        
+          </div>
+        </div>
+
+        <div *ngIf="error.length > 0" class="notification is-danger">
+            <button  class="delete" (click)="error = ''"></button>
+              {{error}}
+          </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button [disabled]="post != undefined && !post.valid" class="button is-link">Create</button>
+          </div>
+          <div class="control">
+            <button class="button is-text" (click)="router.navigate(['/'])">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>

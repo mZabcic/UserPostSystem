@@ -1,0 +1,52 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    &__box {
+        width: 50%;
+        margin: 0 auto;
+    }
+}
+
+
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    &__box {
+        width: 50%;
+        margin: 0 auto;
+    }
+}
+
+.friend {
+    display: flex;
+    justify-content: center;
+
+
+    &__box {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 32px;
+
+        table {
+            width: 100%;
+        }
+    }
+}
+
+.post {
+    display: flex;
+    justify-content: center;
+
+
+    &__box {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 32px;
+    }
+}
